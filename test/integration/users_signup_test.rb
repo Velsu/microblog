@@ -29,8 +29,8 @@ test "Should be able to sign up" do
 	assert_template 'users/show'
 	assert_select 'section.user_info'
 	assert_not flash.nil?
+	assert is_logged_in?
 end
-
 
 
 

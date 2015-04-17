@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   def create
   	@user = User.new(valid_params)
   	if @user.save
+      log_in @user
   		flash[:success] = "Welcome to Microblog App"
   		redirect_to @user
   	else
