@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
-	attr_accessor :remember_token
-	before_save { self.email.downcase! }
+	attr_accessor :remember_token, :activation_token
+	before_save :email_downcase
+    before_create :create_activation_digest
 
 	validates :name, presence: true, length: { maximum: 50 }
 	validates :email, presence: true, length: { maximum: 255 },
@@ -33,5 +34,22 @@ class User < ActiveRecord::Base
 
     def forget
     	update_attribute(:remember_digest, nil)
+    end
+
+
+
+
+
+
+
+    private
+
+    def email_downcase
+        self.email = email.downcase
+    end
+
+    def create_activation_digest
+        self.activation_token = User.new_token
+        self.activation_digest = User.digest(activation_token)
     end
 end
