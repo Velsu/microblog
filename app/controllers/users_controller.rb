@@ -21,9 +21,9 @@ class UsersController < ApplicationController
   def create
   	@user = User.new(valid_params)
   	if @user.save
-      log_in @user
-  		flash[:success] = "Welcome to Microblog App"
-  		redirect_to @user
+      @user.send_activation_email
+  		flash[:success] = "Please check Your email for activation"
+  		redirect_to root_url
   	else
   		render 'new'
   	end
