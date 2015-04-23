@@ -34,6 +34,12 @@ end
     # Try to log in before activation.
     log_in_as(user)
     assert_not is_logged_in?
+    # Check Index page
+    get users_path
+    assert_no_match user.name, response.body
+    # Check Profile page
+    get user_path(user)
+    assert_redirected_to root_url
     # Invalid activation token
     get edit_account_activation_path("invalid token")
     assert_not is_logged_in?
