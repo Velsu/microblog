@@ -4,6 +4,7 @@ class StaticPagesControllerTest < ActionController::TestCase
 
   def setup
   	@base_title = "Microblog Sample App"
+    log_in_as(users(:luke))
   end
 
 
