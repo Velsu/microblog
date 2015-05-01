@@ -1,14 +1,14 @@
 class User < ActiveRecord::Base
 	attr_accessor :remember_token, :activation_token, :reset_token
     has_many :microposts, dependent: :destroy
-    has_many :active_relationship, class_name: "Relationship",
+    has_many :active_relationships, class_name: "Relationship",
                                    foreign_key: "follower_id",
                                    dependent: :destroy
-    has_many :following, through: :active_relationship, source: "followed"
-    has_many :passive_relationship, class_name: "Relationship",
+    has_many :following, through: :active_relationships, source: "followed"
+    has_many :passive_relationships, class_name: "Relationship",
                                     foreign_key: "followed_id",
                                     dependent: :destroy
-    has_many :followers, through: :passive_relationship, source: "follower"
+    has_many :followers, through: :passive_relationships, source: "follower"
 	before_save :email_downcase
     before_create :create_activation_digest
 
@@ -76,12 +76,12 @@ class User < ActiveRecord::Base
 
     #Follows user
     def follow(other_user)
-        active_relationship.create(followed_id: other_user.id)
+        active_relationships.create(followed_id: other_user.id)
     end
 
     #Unfollows user
     def unfollow(other_user)
-        active_relationship.find_by(followed_id: other_user.id).destroy
+        active_relationships.find_by(followed_id: other_user.id).destroy
     end
 
     #Returns true if the current user following the other user
